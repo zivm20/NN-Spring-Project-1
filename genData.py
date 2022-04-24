@@ -17,13 +17,13 @@ def generate_points(size=1000,seed=None,_min=-10000,_max=10001,data:any=[]):
     rng = np.random.RandomState(seed)
     if len(data) != 0:
         if isinstance(data,(dict,pd.DataFrame)):
-            out = np.array( [data["x"],data["y"]] )
+            out = np.array( [data["x"],data["y"]])
         else:
             out = np.array(data[:2])
         #slice out to the correct size
-        if out.shape[1] > size:
+        if size != None and out.shape[1] > size:
             out = out[:,0:size]
-        elif out.shape[1] < size:
+        elif size != None and out.shape[1] < size:
             extra = rng.randint(_min,_max,(2,size-out.shape[1]))
             out = np.concatenate((out,extra),axis=1)   
     else:
