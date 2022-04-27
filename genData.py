@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-
+from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay, roc_curve
+import matplotlib.pyplot as plt
 
 def_seed=None
 
@@ -54,7 +55,35 @@ def create_B(size=1000,raw_data:np.ndarray=[],seed=None,_min=-10000,_max=10001):
 
 
 
+#helper function to plot model results
+def plot_model_results(y_true,y_pred,labels=None):
+    
+    
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    cm = ConfusionMatrixDisplay.from_predictions(y_true,y_pred,display_labels=labels,values_format="d",ax=ax1)
+    
+    fig.set_size_inches(20,10)
+    num = cm.text_[0][0].get_text()
+    txt = "True Negative"+ "\n" + num + "\n" + '{0:.3f}'.format(100*(int(num)/len(y_pred)))+"%"
+    cm.text_[0][0].set_text(txt)
+    
+    num = cm.text_[1][0].get_text()
+    txt = "False Negative"+ "\n" + num + "\n" + '{0:.3f}'.format(100*(int(num)/len(y_pred)))+"%"
+    cm.text_[1][0].set_text(txt)
 
+    num = cm.text_[0][1].get_text()
+    txt = "False Positive"+ "\n" + num + "\n" + '{0:.3f}'.format(100*(int(num)/len(y_pred)))+"%"
+    cm.text_[0][1].set_text(txt)
+
+    num = cm.text_[1][1].get_text()
+    txt = "True Positive"+ "\n" + num + "\n" + '{0:.3f}'.format(100*(int(num)/len(y_pred)))+"%"
+    cm.text_[1][1].set_text(txt)
+    
+    falsePosRate, truePosRate, _ = roc_curve(y_true,np.random.choice([0,1],size=len(y_true)))
+    
+    
+    ax2.plot(falsePosRate, truePosRate, linestyle='--')
+    RocCurveDisplay.from_predictions(y_true,y_pred,ax=ax2)
 
 
 
