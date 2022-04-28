@@ -56,7 +56,7 @@ def create_B(size=1000,raw_data:np.ndarray=[],seed=None,_min=-10000,_max=10001):
 
 
 #helper function to plot model results
-def plot_model_results(y_true,y_pred,labels=None):
+def plot_model_results(y_true,y_pred,labels=None,name=None):
     
     
     fig, (ax1, ax2) = plt.subplots(1, 2)
@@ -79,11 +79,13 @@ def plot_model_results(y_true,y_pred,labels=None):
     txt = "True Positive"+ "\n" + num + "\n" + '{0:.3f}'.format(100*(int(num)/len(y_pred)))+"%"
     cm.text_[1][1].set_text(txt)
     
-    falsePosRate, truePosRate, _ = roc_curve(y_true,np.random.choice([0,1],size=len(y_true)))
+    RocCurveDisplay.from_predictions(y_true,np.random.choice([0,1],size=len(y_true)),ax=ax2,linestyle='--',name="Random classifier")
     
     
-    ax2.plot(falsePosRate, truePosRate, linestyle='--')
+    #ax2.plot(falsePosRate, truePosRate, linestyle='--',label="random classifier")
     RocCurveDisplay.from_predictions(y_true,y_pred,ax=ax2)
+    if name != None:
+        plt.savefig(name)
 
 
 
