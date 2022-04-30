@@ -32,7 +32,6 @@ def generate_points(size=1000,seed=None,_min=-10000,_max=10001,data:any=[]):
     return out
     
 
-
 #generate a DataSet for Part A
 def create_A(size=1000,raw_data:np.ndarray=[],seed=None,_min=-10000,_max=10001):
     seed = get_seed(seed)
